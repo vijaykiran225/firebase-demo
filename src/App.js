@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
 function App() {
+
+  const [data, setData] = useState({});
+  const [txnId, setTxnId] = useState("");
+  const inpHandler = (e) => {
+    setTxnId(e.target.value);
+  };
+
+  const buttonHandler = () => {
+
+    fetch(`/api/txn/${txnId}`)
+      .then(d => d.json())
+      .then(d => setData(d))
+      .catch(console.log);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="text" id="pid" onChange={inpHandler} /><br></br>
+      <button onClick={buttonHandler}>click</button><br></br>
+      this is the data
+      <br></br>
+      {data.id} is {data.from} ={`>`} {data.to} with {data.amount}
     </div>
   );
 }
